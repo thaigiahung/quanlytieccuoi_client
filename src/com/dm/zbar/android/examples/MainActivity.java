@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -32,6 +33,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.dm.zbar.android.scanner.ZBarConstants;
@@ -185,6 +187,7 @@ public class MainActivity extends Activity {
     public static class GridView_Item
     {
     	public TextView txtTable, txtNumOfGuest;
+    	public RelativeLayout rlLayout;
     }
 
     public class myadapter extends BaseAdapter
@@ -226,7 +229,8 @@ public class MainActivity extends Activity {
 				gv_item = new GridView_Item();  
 				arg1 = layoutinflater.inflate(R.layout.gridview_item, null);  
 				gv_item.txtTable = (TextView) arg1.findViewById(R.id.txtTable);  
-				gv_item.txtNumOfGuest = (TextView) arg1.findViewById(R.id.txtNumOfGuest);  
+				gv_item.txtNumOfGuest = (TextView) arg1.findViewById(R.id.txtNumOfGuest); 
+				gv_item.rlLayout = (RelativeLayout) arg1.findViewById(R.id.RelativeLayout1);
 				arg1.setTag(gv_item);  
 			}  
 			else
@@ -237,6 +241,10 @@ public class MainActivity extends Activity {
 				jObj = jArr.getJSONObject(arg0);
 				gv_item.txtTable.setText("Bàn " + jObj.optString("id"));
 				gv_item.txtNumOfGuest.setText("Số khách hiện tại: " + jObj.optString("current_num_of_guest"));
+				if(jObj.optString("status").equalsIgnoreCase("1")) //Đã đủ số lượng -> đổi màu
+				{
+					gv_item.rlLayout.setBackgroundColor(Color.GREEN);
+				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
