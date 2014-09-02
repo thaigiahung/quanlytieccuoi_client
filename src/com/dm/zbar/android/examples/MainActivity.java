@@ -46,7 +46,8 @@ public class MainActivity extends Activity {
     private static final int ZBAR_QR_SCANNER_REQUEST = 1;
     private static Activity mAct;
     public JSONArray jArr;
-    public static String domain = "http://192.168.0.11/quanlytieccuoi_server/";
+//    public static String domain = "http://192.168.0.11/quanlytieccuoi_server/";
+    public static String domain = "http://hung.byethost14.com/";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,8 +87,9 @@ public class MainActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				// TODO Auto-generated method stub
-				Toast.makeText(getApplicationContext(), position+"", Toast.LENGTH_SHORT).show();
+				// TODO Auto-generated method stub				
+				String guestList = postData(domain + "detail.php", position+1+"");
+				Detail.newInstance(mAct,guestList);
 			}
 		});
     }
@@ -117,7 +119,7 @@ public class MainActivity extends Activity {
         }
     } 
     
-    public void postData(String url, String code) {
+    public String postData(String url, String code) {
         // Create a new HttpClient and Post Header
         HttpClient httpclient = new DefaultHttpClient();
         HttpPost httppost = new HttpPost(url);
@@ -132,11 +134,12 @@ public class MainActivity extends Activity {
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity responseEntity = response.getEntity();
     		String result = EntityUtils.toString(responseEntity,"UTF-8");
-            
+            return result;
         } catch (Exception e) {
             // TODO Auto-generated catch block
         	Log.e("Loi", "Loi", e);
         }
+		return null;
     } 
     
     public static void newInstance(Activity act) {
