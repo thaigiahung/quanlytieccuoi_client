@@ -11,6 +11,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,6 +44,7 @@ public class MainActivity extends Activity {
     private static final int ZBAR_QR_SCANNER_REQUEST = 1;
     private static Activity mAct;
     public JSONArray jArr;
+    public static String domain = "http://192.168.0.11/quanlytieccuoi_server/";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,7 +74,7 @@ public class MainActivity extends Activity {
 			}
 		});
         
-        String url = "http://192.168.1.53/quanlytieccuoi_server/data.php";
+        String url = domain + "data.php";
         postData(url);
         
         GridView gv = (GridView)findViewById(R.id.gridView1);
@@ -105,8 +107,32 @@ public class MainActivity extends Activity {
             HttpEntity responseEntity = response.getEntity();
     		String result = EntityUtils.toString(responseEntity);
     		
-    		Log.i("a", result);
     		jArr = new JSONArray(result);
+            
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+        	Log.e("Loi", "Loi", e);
+        }
+    } 
+    
+    public void postData(String url, String code) {
+        // Create a new HttpClient and Post Header
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost httppost = new HttpPost(url);
+
+        try {
+            // Add your data
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+            nameValuePairs.add(new BasicNameValuePair("code", code));
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
+
+            // Execute HTTP Post Request
+            HttpResponse response = httpclient.execute(httppost);
+            HttpEntity responseEntity = response.getEntity();
+    		String result = EntityUtils.toString(responseEntity);
+    		
+    		Log.i("a", "url: " + url + " code: " + code);
+    		Log.i("b", result);
             
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -144,6 +170,7 @@ public class MainActivity extends Activity {
             case ZBAR_SCANNER_REQUEST:
             case ZBAR_QR_SCANNER_REQUEST:
                 if (resultCode == RESULT_OK) {
+                	postData(domain + "scan.php", data.getStringExtra(ZBarConstants.SCAN_RESULT));
                     Toast.makeText(this, "Scan Result = " + data.getStringExtra(ZBarConstants.SCAN_RESULT), Toast.LENGTH_SHORT).show();
                 } else if(resultCode == RESULT_CANCELED && data != null) {
                     String error = data.getStringExtra(ZBarConstants.ERROR_INFO);
