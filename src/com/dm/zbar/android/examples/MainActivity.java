@@ -124,15 +124,12 @@ public class MainActivity extends Activity {
             // Add your data
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
             nameValuePairs.add(new BasicNameValuePair("code", code));
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
 
             // Execute HTTP Post Request
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity responseEntity = response.getEntity();
-    		String result = EntityUtils.toString(responseEntity);
-    		
-    		Log.i("a", "url: " + url + " code: " + code);
-    		Log.i("b", result);
+    		String result = EntityUtils.toString(responseEntity,"UTF-8");
             
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -171,7 +168,8 @@ public class MainActivity extends Activity {
             case ZBAR_QR_SCANNER_REQUEST:
                 if (resultCode == RESULT_OK) {
                 	postData(domain + "scan.php", data.getStringExtra(ZBarConstants.SCAN_RESULT));
-                    Toast.makeText(this, "Scan Result = " + data.getStringExtra(ZBarConstants.SCAN_RESULT), Toast.LENGTH_SHORT).show();
+                	Toast.makeText(this, "Kết quả: " + data.getStringExtra(ZBarConstants.SCAN_RESULT), Toast.LENGTH_SHORT).show();
+                    newInstance(mAct);
                 } else if(resultCode == RESULT_CANCELED && data != null) {
                     String error = data.getStringExtra(ZBarConstants.ERROR_INFO);
                     if(!TextUtils.isEmpty(error)) {
