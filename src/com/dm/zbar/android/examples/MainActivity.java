@@ -46,8 +46,8 @@ public class MainActivity extends Activity {
     private static final int ZBAR_QR_SCANNER_REQUEST = 1;
     private static Activity mAct;
     public JSONArray jArr;
-//    public static String domain = "http://192.168.0.11/quanlytieccuoi_server/";
-    public static String domain = "http://hung.byethost14.com/";
+    public static String domain = "http://192.168.0.12/quanlytieccuoi_server/";
+//    public static String domain = "http://hung.byethost14.com/";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -189,7 +189,7 @@ public class MainActivity extends Activity {
 //    GridView
     public static class GridView_Item
     {
-    	public TextView txtTable, txtNumOfGuest;
+    	public TextView txtTable, txtTotalNumOfGuest, txtCurrentNumOfGuest;
     	public RelativeLayout rlLayout;
     }
 
@@ -232,7 +232,8 @@ public class MainActivity extends Activity {
 				gv_item = new GridView_Item();  
 				arg1 = layoutinflater.inflate(R.layout.gridview_item, null);  
 				gv_item.txtTable = (TextView) arg1.findViewById(R.id.txtTable);  
-				gv_item.txtNumOfGuest = (TextView) arg1.findViewById(R.id.txtNumOfGuest); 
+				gv_item.txtTotalNumOfGuest = (TextView) arg1.findViewById(R.id.txtTotalNumOfGuest);
+				gv_item.txtCurrentNumOfGuest = (TextView) arg1.findViewById(R.id.txtCurrentNumOfGuest); 
 				gv_item.rlLayout = (RelativeLayout) arg1.findViewById(R.id.RelativeLayout1);
 				arg1.setTag(gv_item);  
 			}  
@@ -242,8 +243,9 @@ public class MainActivity extends Activity {
 			JSONObject jObj;
 			try {
 				jObj = jArr.getJSONObject(arg0);
-				gv_item.txtTable.setText("Bàn " + jObj.optString("id"));
-				gv_item.txtNumOfGuest.setText("Số khách hiện tại: " + jObj.optString("current_num_of_guest"));
+				gv_item.txtTable.setText(jObj.optString("name"));
+				gv_item.txtTotalNumOfGuest.setText("Tổng: " + jObj.optString("total_num_of_guest"));
+				gv_item.txtCurrentNumOfGuest.setText("Hiện tại: " + jObj.optString("current_num_of_guest"));
 				if(jObj.optString("status").equalsIgnoreCase("1")) //Đã đủ số lượng -> đổi màu
 				{
 					gv_item.rlLayout.setBackgroundColor(Color.GREEN);
