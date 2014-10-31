@@ -184,22 +184,31 @@ public class MainActivity extends Activity {
                 	try {
 						JSONObject jObj = new JSONObject(strObj);
 						
-//	                	Toast.makeText(this, "Kết quả: " + data.getStringExtra(ZBarConstants.SCAN_RESULT), Toast.LENGTH_SHORT).show();
-	                	
-	                	AlertDialog.Builder builder1 = new AlertDialog.Builder(getApplicationContext());
-	                    String name = jObj.optString("name");
+						String name = jObj.optString("name");
 	                    String table = jObj.optString("table");
-	                	builder1.setMessage("Tên khách: "+ name + "\nBàn: " + table);
-	                    builder1.setCancelable(true);
-	                    builder1.setPositiveButton("OK",
-	                            new DialogInterface.OnClickListener() {
-	                        public void onClick(DialogInterface dialog, int id) {
-	                            dialog.cancel();
-	                        }
-	                    });
+						
+//	                	Toast.makeText(this, "Kết quả: " + data.getStringExtra(ZBarConstants.SCAN_RESULT), Toast.LENGTH_SHORT).show();
+	                    	                	
+	                    AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
 
-	                    AlertDialog alert11 = builder1.create();
-	                    alert11.show();
+	                    // Setting Dialog Title
+	                    alertDialog.setTitle("Kết quả");
+
+	                    // Setting Dialog Message
+	                    alertDialog.setMessage("Khách : " + name + "\nBàn      : " + table);
+
+	                    // Setting OK Button
+	                    alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+
+	                                public void onClick(DialogInterface dialog,int which) 
+	                                {
+	                                    // Write your code here to execute after dialog closed
+	                                	newInstance(mAct);
+	                                }
+	                            });
+
+	                    // Showing Alert Message
+	                    alertDialog.show();
 	                    
 	                    
 					} catch (JSONException e) {
@@ -207,7 +216,6 @@ public class MainActivity extends Activity {
 						e.printStackTrace();
 					}
                     
-                    newInstance(mAct);
                 } else if(resultCode == RESULT_CANCELED && data != null) {
                     String error = data.getStringExtra(ZBarConstants.ERROR_INFO);
                     if(!TextUtils.isEmpty(error)) {
@@ -281,7 +289,7 @@ public class MainActivity extends Activity {
 				gv_item.txtCurrentNumOfGuest.setText("Hiện tại: " + jObj.optString("current_num_of_guest"));
 				if(jObj.optString("status").equalsIgnoreCase("1")) //Đã đủ số lượng -> đổi màu
 				{
-					gv_item.rlLayout.setBackgroundColor(Color.GREEN);
+					gv_item.rlLayout.setBackgroundColor(Color.rgb(255,157,206));
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
