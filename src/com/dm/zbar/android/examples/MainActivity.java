@@ -18,11 +18,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,6 +36,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,8 +50,8 @@ public class MainActivity extends Activity {
     private static final int ZBAR_QR_SCANNER_REQUEST = 1;
     private static Activity mAct;
     public JSONArray jArr;
-    public static String domain = "http://192.168.0.12/quanlytieccuoi_server/";
-//    public static String domain = "http://hung.byethost14.com/";
+//    public static String domain = "http://192.168.1.110/quanlytieccuoi_server/";
+    public static String domain = "http://hung.byethost14.com/";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -171,9 +175,38 @@ public class MainActivity extends Activity {
         switch (requestCode) {
             case ZBAR_SCANNER_REQUEST:
             case ZBAR_QR_SCANNER_REQUEST:
+            	Vibrator v = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+            	 // Vibrate for 500 milliseconds
+            	 v.vibrate(500);
+            	 
                 if (resultCode == RESULT_OK) {
-                	postData(domain + "scan.php", data.getStringExtra(ZBarConstants.SCAN_RESULT));
-                	Toast.makeText(this, "Kết quả: " + data.getStringExtra(ZBarConstants.SCAN_RESULT), Toast.LENGTH_SHORT).show();
+                	String strObj = postData(domain + "scan.php", data.getStringExtra(ZBarConstants.SCAN_RESULT));
+                	try {
+						JSONObject jObj = new JSONObject(strObj);
+						
+//	                	Toast.makeText(this, "Kết quả: " + data.getStringExtra(ZBarConstants.SCAN_RESULT), Toast.LENGTH_SHORT).show();
+	                	
+	                	AlertDialog.Builder builder1 = new AlertDialog.Builder(getApplicationContext());
+	                    String name = jObj.optString("name");
+	                    String table = jObj.optString("table");
+	                	builder1.setMessage("Tên khách: "+ name + "\nBàn: " + table);
+	                    builder1.setCancelable(true);
+	                    builder1.setPositiveButton("OK",
+	                            new DialogInterface.OnClickListener() {
+	                        public void onClick(DialogInterface dialog, int id) {
+	                            dialog.cancel();
+	                        }
+	                    });
+
+	                    AlertDialog alert11 = builder1.create();
+	                    alert11.show();
+	                    
+	                    
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                    
                     newInstance(mAct);
                 } else if(resultCode == RESULT_CANCELED && data != null) {
                     String error = data.getStringExtra(ZBarConstants.ERROR_INFO);
@@ -190,7 +223,7 @@ public class MainActivity extends Activity {
     public static class GridView_Item
     {
     	public TextView txtTable, txtTotalNumOfGuest, txtCurrentNumOfGuest;
-    	public RelativeLayout rlLayout;
+    	public LinearLayout rlLayout;
     }
 
     public class myadapter extends BaseAdapter
@@ -234,7 +267,7 @@ public class MainActivity extends Activity {
 				gv_item.txtTable = (TextView) arg1.findViewById(R.id.txtTable);  
 				gv_item.txtTotalNumOfGuest = (TextView) arg1.findViewById(R.id.txtTotalNumOfGuest);
 				gv_item.txtCurrentNumOfGuest = (TextView) arg1.findViewById(R.id.txtCurrentNumOfGuest); 
-				gv_item.rlLayout = (RelativeLayout) arg1.findViewById(R.id.RelativeLayout1);
+				gv_item.rlLayout = (LinearLayout) arg1.findViewById(R.id.LinearLayout1);
 				arg1.setTag(gv_item);  
 			}  
 			else
