@@ -180,7 +180,10 @@ public class MainActivity extends Activity {
             	 v.vibrate(500);
             	 
                 if (resultCode == RESULT_OK) {
-                	String strObj = postData(domain + "scan.php", data.getStringExtra(ZBarConstants.SCAN_RESULT));
+                	String id = data.getStringExtra(ZBarConstants.SCAN_RESULT);
+                	id = id.substring(id.lastIndexOf("#")+1);
+                	String strObj = postData(domain + "scan.php", id);
+                	Log.i("ID", id);
                 	try {
 						JSONObject jObj = new JSONObject(strObj);
 						
