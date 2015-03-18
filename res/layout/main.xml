@@ -8,7 +8,7 @@
         android:id="@+id/LinearLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="2" >
+        android:weightSum="3" >
 
         <Button
             android:id="@+id/btnScan"
@@ -23,6 +23,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Refresh" />
+
+        <Button
+            android:id="@+id/btnCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Check" />
+
     </LinearLayout>
 
     <GridView

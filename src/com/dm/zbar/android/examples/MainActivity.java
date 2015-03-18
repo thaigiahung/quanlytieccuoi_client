@@ -50,8 +50,8 @@ public class MainActivity extends Activity {
     private static final int ZBAR_QR_SCANNER_REQUEST = 1;
     private static Activity mAct;
     public JSONArray jArr;
-//    public static String domain = "http://192.168.1.110/quanlytieccuoi_server/";
-    public static String domain = "http://hung.byethost14.com/";
+    public static String domain = "http://192.168.1.56/quanlytieccuoi_server/";
+//    public static String domain = "http://hung.byethost14.com/";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +62,7 @@ public class MainActivity extends Activity {
         
         Button btnScan = (Button)findViewById(R.id.btnScan);
         Button btnRefresh = (Button)findViewById(R.id.btnRefresh);
+        Button btnCheck = (Button)findViewById(R.id.btnCheck);
         
         btnScan.setOnClickListener(new View.OnClickListener() {
 			
@@ -69,6 +70,16 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				launchScanner(v);
+			}
+		});
+        
+        btnCheck.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(getApplicationContext(), CheckActivity.class);
+				startActivity(intent);
 			}
 		});
         
