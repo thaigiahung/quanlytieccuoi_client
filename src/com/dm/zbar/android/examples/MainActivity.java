@@ -50,8 +50,8 @@ public class MainActivity extends Activity {
     private static final int ZBAR_QR_SCANNER_REQUEST = 1;
     private static Activity mAct;
     public JSONArray jArr;
-    public static String domain = "http://192.168.1.56/quanlytieccuoi_server/";
-//    public static String domain = "http://hung.byethost14.com/";
+    public static String domain = "http://192.168.2.10/quanlytieccuoi_server/";
+//    public static String domain = "http://giahung.net/sv/";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
